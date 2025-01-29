@@ -1,0 +1,22 @@
+const mongoose = require('mongoose');
+const Product = require('./models/Product'); 
+
+
+mongoose.connect('mongodb://localhost:27017/yourdb', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });
+
+Product.find({ category: 'Electronics', price: { $gt: 500 } })
+  .sort({ price: -1 })  
+  .exec((err, products) => {
+    if (err) {
+      console.error('Error fetching products:', err);
+    } else {
+      console.log('Electronics products with price greater than $500, sorted by price:');
+      console.log(products);
+    }
+  });
